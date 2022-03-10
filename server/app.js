@@ -3,8 +3,6 @@ const express = require('express');
 var session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
-
-//var DbContext = require('./DbFunctions/DbContext');
 const { response } = require('express');
 
 var app = express();
@@ -23,32 +21,34 @@ const port = process.env.PORT || 1337;
 const publicDirectoryPath = path.join(__dirname, 'public/');
 app.use(express.static(publicDirectoryPath));
 
+// custom packages
+var config = require('./config');
+var DataService = require('./Services/DataService');
+let dataService = new DataService(publicDirectoryPath + config.data_filename);
+
 const server = http.createServer(app);
 var io = require('socket.io')(server);
 
 
 // GET for home page (landing page)
-app.get('/', async function(request, response) {
-    /*
-    response.render(publicDirectoryPath + 'views/home.html', {
-        userID: userData["ID"],
-        userEmailAddress: userData["EmailAddress"],
-        username: userData["Username"]
-    });*/
+app.get('/', function(request, response) {
     response.render(publicDirectoryPath + 'views/home.html');
 });
 
-app.get('/data', async function(request, response) {
-    response.render(publicDirectoryPath + 'views/data.html');
+app.get('/data', function(request, response) { 
+    response.render(publicDirectoryPath + 'views/data.html', {
+        cryptoData: request.session.cryptoData
+    });
 });
 
-
-
+app.get('/getCryptoData', function(request, response) {
+    dataService.GetCryptoData().then((cryptoData) => {
+        response.send({cryptoData: cryptoData});
+    });
+})
 
 
 app.post('/navToData', function(request, response) {
-    var userID = request.body.userID;
-    request.session.userID = userID;
     response.send({redirect: '/data'});
 });
 
