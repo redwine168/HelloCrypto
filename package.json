@@ -1,4 +1,10 @@
 {
+  "name": "HelloCrypto",
+  "description": "Jonathan Redwine's HelloCrypto app",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "author": "Jonathan Redwine",
   "dependencies": {
     "csv-parser": "^3.0.0",
     "ejs": "^3.1.6",
