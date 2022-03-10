@@ -10,7 +10,9 @@ $.ajax({
             GenerateCharts(result.cryptoData);
             $("#data-loading-spinner").hide();
         } catch(err) {
-            console.log("ERROR: " + err);
+            console.log(err)
+            $("#error-message").html("There was an error loading the data.  Please try reloading the page (" + err +")");
+            $("#error-message-container").show();
         }
     }
 });
