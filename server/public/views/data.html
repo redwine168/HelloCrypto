@@ -20,12 +20,25 @@
             </a>
         </nav>
 
-        <div id="crypto-data-container">
-            Loading...
+        <div class="flexbox" id="messages-container">
+            <div id="data-loading-spinner">
+                Loading...
+            </div>
         </div>
 
-        <div>
-            <canvas id="btc-chart"></canvas>
+        <div class="flexbox">
+            <div class="flexbox-item">
+                <canvas id="btc-chart"></canvas>
+            </div>
+            <div class="flexbox-item">
+                <canvas id="eth-chart"></canvas>
+            </div>
+            <div class="flexbox-item">
+                <canvas id="ltc-chart"></canvas>
+            </div>
+            <div class="flexbox-item">
+                <canvas id="bch-chart"></canvas>
+            </div>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
