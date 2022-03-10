@@ -18,6 +18,7 @@ $.ajax({
 });
 
 
+// Chart functions
 function GenerateCharts(cryptoData) {
     GenerateBTCChart(cryptoData);
     GenerateETHChart(cryptoData);
@@ -147,6 +148,84 @@ function GenerateBCHChart(cryptoData) {
 }
 
 
+function showSelectUsernameModal() {
+    $("#new-username-modal").show();
+}
 
+function hideSelectUsernameModal() {
+    $("#new-username-modal").hide();
+}
+
+function submitUsername() {
+    var username = $("#new-username-input").val();
+    // if username too long or too short
+    if (username.length < 3 || username.length > 12) {
+        $("#submit-username-error-msg").html("Username must be between 3 and 12 characters long.");
+    }
+    // if username has invalid characters
+    else if (!/^[a-zA-Z]+$/.test(username)) {
+        $("#submit-username-error-msg").html("Only letters (A-Z, a-z) are allowed.");
+    }
+    // if valid username
+    else {
+        $("#username").val(username);
+        hideSelectUsernameModal();
+    }
+}
+
+
+
+/// ------------------
+/// ----- SOCKET -----
+/// ------------------
+var socket = io();
+
+// Send chat message
+$("#new-chat-message-form").submit(function(e) {
+    sendChatMessage();
+    e.preventDefault();
+});
+
+function sendChatMessage() {
+    let message = $("#new-chat-message-input").val();
+    let username = $("#username").val();
+    if (username === "") {
+        showSelectUsernameModal();
+        return;
+    }
+    if (message !== "") {
+        $("#new-chat-message-input").val("");
+        socket.emit('new-chat-message', {username, message}, (error) => {
+            if (error) {
+                //if error sending message, return user to homepage
+                alert(error);
+                location.href = '/home';
+            }
+        });
+    }
+}
+
+// On new chat message
+socket.on('chat-message', (username, message) => {
+    const chatMessageTemplate = document.querySelector('#chat-message-template').innerHTML;
+    const chatbox = document.querySelector('#chat');
+    const chatMessageHtml = Mustache.render(chatMessageTemplate,
+      {
+        username,
+        message
+      }
+    )
+    chatbox.innerHTML = chatbox.innerHTML + chatMessageHtml;
+    chatbox.scrollTop = chatbox.scrollHeight;
+});
+
+// Join this chatroom when user enters this page
+socket.emit('join-chatroom', {username}, (error) => {
+    if (error) {
+        // if error joining chatroom, return user to homepage
+        alert(error);
+        location.href = '/'
+    }
+});
 
 

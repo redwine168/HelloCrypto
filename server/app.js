@@ -60,83 +60,23 @@ app.post('/navToData', function(request, response) {
 
 // When a user connects
 io.on('connection', (socket) => {
-
-    // Request to get available chatrooms
-    socket.on('available-chatrooms-refresh-request', async (data) => {
-        // Get user info and add socket to appropriate room
-        var userID = data.userID;
-        var room = config.naming.home + userID;
-        socket.join(room);
-
-        chatrooms = {}
-        dbContext.SelectMostPopularChatrooms().then((popularChatroomsResult) => {
-            chatrooms.popularChatrooms = popularChatroomsResult.recordset;
-            dbContext.SelectActiveChatrooms().then((activeChatroomsResult) => {
-                chatrooms.activeChatrooms = activeChatroomsResult.recordset;
-                io.to(room).emit('available-chatrooms', chatrooms);
-            });
-        });
-    });
-
-
-    // Create new chatroom
-    socket.on('create-new-chatroom', (data) => {
-        var insertNewChatroomModel = {};
-        insertNewChatroomModel.chatroomName = data.chatroomName
-        insertNewChatroomModel.userID = data.userID;
-        let room = config.naming.home + data.userID;
-        dbContext.InsertNewChatroom(insertNewChatroomModel).then((newChatroomID) => {
-            io.to(room).emit('nav-to-chatroom', newChatroomID);
-        });
-    });
-
-
     // Join chatroom
     socket.on('join-chatroom', (data) => {
-        var addUserToChatroomModel = {}
-        addUserToChatroomModel.userID = data.userID;
-        addUserToChatroomModel.chatroomID = data.chatroomID;
-        let room = config.naming.chatroom + addUserToChatroomModel.chatroomID;
+        // we'll only have one room, the name of which we'll pull from config
+        let room = config.crypto_chatroom_name;
         socket.join(room);
-        let message = data.username + " entered the chatroom!";
-        io.to(room).emit('chat-message', 0, "Admin", message);
-        dbContext.AddUserToChatroom(addUserToChatroomModel);
-    });
-
-    // Leave chatroom
-    socket.on("disconnecting", () => {
-        var rooms = socket.rooms;
-        for (var i in rooms) {
-            if (rooms[i].includes(config.naming.chatroom)) {
-                var chatroomID = rooms[i].substring(rooms[i].indexOf(config.naming.chatroom) + config.naming.chatroom.length);
-                io.to(socket.id).emit('disconnected-from-chatroom');
-                removeUserFromChatroomModel = {};
-                removeUserFromChatroomModel.chatroomID = chatroomID;
-                dbContext.RemoveUserFromChatroom(removeUserFromChatroomModel);
-            }
-        }
     });
 
 
     // New chat message
     socket.on('new-chat-message', (data) => {
-        /*
-        // delete this:
-        io.to(socket.id).emit('disconnected-from-chatroom');
-        console.log("disconnecting " + socket.id)*/
-
-        insertNewMessageModel = {};
-        insertNewMessageModel.chatroomID = data.chatroomID;
-        insertNewMessageModel.userID = data.userID;
-        insertNewMessageModel.message = data.message;
-        let room = "chatroom" + insertNewMessageModel.chatroomID;
-        io.to(room).emit('chat-message', data.userID, data.username, insertNewMessageModel.message);
-        dbContext.InsertNewMessage(insertNewMessageModel);
+        let room = config.crypto_chatroom_name;
+        io.to(room).emit('chat-message', data.username, data.message);
     });
 
 });
 
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+     console.log(`Server running at http://${hostname}:${port}/`);
 });

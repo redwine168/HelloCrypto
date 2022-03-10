@@ -48,9 +48,61 @@
         </div>
 
         <div class="flexbox" id="chat-container">
-
+            <div class="flexbox-chat-item">
+                <input id="username" hidden>
+                <div>
+                    <div class="chat" id="chat"></div>
+                </div>
+                <div>
+                    <form id="new-chat-message-form" class="text-center">
+                        <input class="chat-message-input" id="new-chat-message-input" placeholder="New message" autocomplete="off">
+                        <span><button type="button" class="btn-success" onclick="sendChatMessage()">Send</button></span>
+                    </form>
+                </div>
+            </div>
         </div>
 
+        <!-- New username modal -->
+        <div class="modal" id="new-username-modal" tabindex="-1" role="dialog" aria-labelledby="newUsernameModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Select a Username</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="text-justify">
+                                    Please choose a username to use in the chatroom while on this page.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <input id="new-username-input" autocomplete="off">
+                            </div>
+                        </div>
+                        <span class="text-danger" id="submit-username-error-msg"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="submitUsername()">Submit</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideSelectUsernameModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Chat message template script -->
+        <script id="chat-message-template" type="text/html">
+            <div class="chat-message">
+                <strong>{{username}}</strong>: {{message}}
+            </div>
+        </script>
+
+        <!-- SCRIPTS -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
