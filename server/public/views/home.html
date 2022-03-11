@@ -19,23 +19,84 @@
             </a>
         </nav>
 
+        <!-- Main jumbotron heading the page-->
         <main role="main">
             <section class="jumbotron text-center bg-dark text-white">
                 <div class="container">
                     <h1 class="jumbotron-heading">Welcome to HelloCrypto!</h1>
                     <p class="lead">See recent prices of various cryptocurrencies, including Bitcoin and Ethereum.</p>
+                    <p>Select a cryptocurrency below, or view all available cryptocurrencies at once.</p>
                     <p>
-                        <button type="button" class="btn btn-primary" onclick="navToData()">
-                            Check out the data!
+                        <button type="button" class="btn btn-primary" onclick="navToAllData()">
+                            See All Data
                         </button>
                     </p>
                 </div>
             </section>
         </main>
 
+        <!-- Album style listing of available cryptos-->
+        <div class="flexbox">
+            <div class="flexbox-album-item rounded-corners">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="../img/bitcoin.png" alt="Bitcoin">
+                    <div class="card-body">
+                        <p class="card-text">Bitcoin</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="BTC-btn" onclick="navToSingleData(this)">View</button>
+                            </div>
+                            <small class="text-muted">BTC</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flexbox-album-item rounded-corners">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="../img/ethereum.jpeg" alt="Ethereum">
+                    <div class="card-body">
+                        <p class="card-text">Ethereum</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="ETH-btn" onclick="navToSingleData(this)">View</button>
+                            </div>
+                            <small class="text-muted">ETH</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flexbox-album-item rounded-corners">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="../img/litecoin.png" alt="Litecoin">
+                    <div class="card-body">
+                        <p class="card-text">Litecoin</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="LTC-btn" onclick="navToSingleData(this)">View</button>
+                            </div>
+                            <small class="text-muted">LTC</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flexbox-album-item rounded-corners">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="../img/bitcoincash.png" alt="Bitcoin Cash">
+                    <div class="card-body">
+                        <p class="card-text">Bitcoin Cash</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="BCH-btn" onclick="navToSingleData(this)">View</button>
+                            </div>
+                            <small class="text-muted">BCH</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="js/home.js"></script>
         <script src="js/navigation.js"></script>
     </body>
 </html>

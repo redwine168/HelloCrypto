@@ -3,12 +3,15 @@
 var fs = require('fs');
 const csv = require('csv-parser');
 
+
+// Class for parsing the crypto data (in this case contained in a local csv file)
 class DataService {
     
     constructor(data_filename) {
         this.data_filename = data_filename;
     }
 
+    // Parse the crypto data from the csv and return it
     async GetCryptoData() {
         var data_filename = this.data_filename;
         return new Promise(function(resolve) {
@@ -20,7 +23,6 @@ class DataService {
                     cryptoData.push(row);
                 }
                 catch(err) {
-                    // error handler
                     throw new Error(err);
                 }
             })

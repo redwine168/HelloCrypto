@@ -16,7 +16,6 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 app.engine('.html', require('ejs').__express);
 app.set('view engine', 'html');
-const hostname = '127.0.0.1';
 const port = process.env.PORT || 1337;
 const publicDirectoryPath = path.join(__dirname, 'public/');
 app.use(express.static(publicDirectoryPath));
@@ -35,28 +34,41 @@ app.get('/', function(request, response) {
     response.render(publicDirectoryPath + 'views/home.html');
 });
 
-app.get('/data', function(request, response) { 
-    response.render(publicDirectoryPath + 'views/data.html', {
-        cryptoData: request.session.cryptoData
+// GET for all crypto data page
+app.get('/allData', function(request, response) { 
+    response.render(publicDirectoryPath + 'views/allData.html');
+});
+
+// GET for single crypto data page
+app.get('/singleData', function(request, response) {
+    var crypto = request.session.crypto;
+    response.render(publicDirectoryPath + 'views/singleData.html', {
+        thisCrypto: crypto
     });
 });
 
+// GET call for retrieving the crypto data
 app.get('/getCryptoData', function(request, response) {
     dataService.GetCryptoData().then((cryptoData) => {
         response.send({cryptoData: cryptoData});
     });
-})
+});
 
+// POST for navigating to all crypto data page
+app.post('/navToAllData', function(request, response) {
+    response.send({redirect: '/allData'});
+});
 
-app.post('/navToData', function(request, response) {
-    response.send({redirect: '/data'});
+// POST for navigating to single crypto data page
+app.post('/navToSingleData', function(request, response) {
+    request.session.crypto = request.body.crypto;
+    response.send({redirect: '/singleData'});
 });
 
 
 /// ------------------
 /// ----- SOCKET -----
 /// ------------------
-
 
 // When a user connects
 io.on('connection', (socket) => {
@@ -76,10 +88,6 @@ io.on('connection', (socket) => {
 
 });
 
-
-/*
-server.listen(port, hostname, () => {
-     console.log(`Server running at http://${hostname}:${port}/`);
-});*/
-
-server.listen(process.env.port);
+server.listen(port, () => {
+    console.log("Server running on port " + port)
+});

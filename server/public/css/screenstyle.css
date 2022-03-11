@@ -3,3 +3,19 @@ body {
     background-color: rgb(236, 254, 255);
 }
 
+
+.flexbox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 25px;
+}
+
+
+.rounded-corners {
+    border-radius: 20px;
+}
+
+

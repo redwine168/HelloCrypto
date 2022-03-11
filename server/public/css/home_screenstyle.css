@@ -1,0 +1,8 @@
+
+
+.flexbox-album-item {
+    min-width: 250px;
+    width: 250px;
+    min-height: 250px;
+    height: 250px;
+}
